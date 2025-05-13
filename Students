@@ -8,80 +8,322 @@
     <style>
         /* 全局样式 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f5f7fa;
+            color: #333;
         }
 
         /* 容器样式 */
         .container {
-            width: 80%;
-            margin: 20px auto;
+            width: 90%;
+            max-width: 1200px;
+            margin: 30px auto;
             background-color: white;
-            padding: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
         }
 
         /* 标题样式 */
         h1 {
             text-align: center;
-            color: #333;
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
 
         /* 表单样式 */
         form {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+
+        .form-group {
+            flex: 1;
+            min-width: 200px;
+            padding: 0 10px;
+            margin-bottom: 15px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #666;
+            margin-bottom: 8px;
+            color: #495057;
+            font-weight: 500;
         }
 
         input[type="text"],
-        input[type="number"] {
+        input[type="number"],
+        select {
             width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
+            padding: 10px;
+            border: 1px solid #ced4da;
             border-radius: 4px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus {
+            border-color: #80bdff;
+            outline: 0;
+            box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
         }
 
         button {
             padding: 10px 20px;
-            background-color: #007BFF;
+            background-color: #3498db;
             color: white;
             border: none;
             border-radius: 4px;
             cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.3s;
+            margin-right: 10px;
+            margin-top: 5px;
         }
 
         button:hover {
-            background-color: #0056b3;
+            background-color: #2980b9;
+        }
+
+        button.secondary {
+            background-color: #6c757d;
+        }
+
+        button.secondary:hover {
+            background-color: #5a6268;
+        }
+
+        button.danger {
+            background-color: #e74c3c;
+        }
+
+        button.danger:hover {
+            background-color: #c0392b;
+        }
+
+        button.success {
+            background-color: #2ecc71;
+        }
+
+        button.success:hover {
+            background-color: #27ae60;
+        }
+
+        /* 查询区域样式 */
+        .search-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-container input,
+        .search-container select {
+            flex: 1;
+            min-width: 200px;
         }
 
         /* 学生列表样式 */
         table {
             width: 100%;
             border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
 
-        th,
-        td {
-            padding: 10px;
+        th, td {
+            padding: 12px 15px;
             text-align: left;
-            border: 1px solid #ccc;
+            border-bottom: 1px solid #ddd;
         }
 
         th {
-            background-color: #f4f4f4;
+            background-color: #3498db;
+            color: white;
+            font-weight: 500;
         }
 
-        /* 排名按钮样式 */
-        #rankButton {
-            margin-top: 10px;
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+
+        tr:hover {
+            background-color: #f1f7fd;
+        }
+
+        /* 操作按钮样式 */
+        .action-btn {
+            padding: 5px 10px;
+            font-size: 12px;
+            margin-right: 5px;
+        }
+
+        /* 消息提示样式 */
+        .message {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .message.error {
+            background-color: #fdecea;
+            color: #d32f2f;
+            border: 1px solid #ef9a9a;
+        }
+
+        .message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #a5d6a7;
+        }
+
+        .message.warning {
+            background-color: #fff8e1;
+            color: #ff8f00;
+            border: 1px solid #ffe082;
+        }
+
+        .message.active {
+            display: block;
+        }
+
+        /* 加载中样式 */
+        .loading {
+            position: relative;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 2px solid #3498db;
+            animation: spin 1s linear infinite;
+            transform: translate(-50%, -50%);
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                width: 95%;
+                padding: 15px;
+            }
+            
+            .form-group {
+                min-width: 100%;
+            }
+            
+            th, td {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+        }
+
+        /* 新增的模态框样式 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: 10% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            animation: modalopen 0.3s;
+        }
+
+        @keyframes modalopen {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-btn {
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            color: #aaa;
+        }
+
+        .close-btn:hover {
+            color: #333;
+        }
+
+        /* 统计卡片样式 */
+        .stats-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            flex: 1;
+            min-width: 150px;
+            background: white;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+
+        .stat-card h3 {
+            margin-top: 0;
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .stat-card p {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #2c3e50;
+        }
+
+        /* 图表容器 */
+        .chart-container {
+            margin-top: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 6px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
     </style>
 </head>
@@ -89,93 +331,748 @@
 <body>
     <div class="container">
         <h1>学生成绩管理系统</h1>
+        
+        <!-- 消息提示区域 -->
+        <div id="error-message" class="message error"></div>
+        <div id="success-message" class="message success"></div>
+        <div id="warning-message" class="message warning"></div>
+
+        <!-- 统计卡片 -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <h3>学生总数</h3>
+                <p id="total-students">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>平均总分</h3>
+                <p id="avg-total">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>最高分</h3>
+                <p id="max-score">0</p>
+            </div>
+            <div class="stat-card">
+                <h3>最低分</h3>
+                <p id="min-score">0</p>
+            </div>
+        </div>
+
+        <!-- 查询区域 -->
+        <div class="search-container">
+            <input type="text" id="searchName" placeholder="输入学生姓名查询">
+            <select id="searchSubject">
+                <option value="">所有科目</option>
+                <option value="math">数学</option>
+                <option value="chinese">语文</option>
+                <option value="dataStructure">数据结构</option>
+                <option value="network">计算机网络</option>
+            </select>
+            <select id="searchRange">
+                <option value="all">全部</option>
+                <option value="90-100">90-100分</option>
+                <option value="80-89">80-89分</option>
+                <option value="70-79">70-79分</option>
+                <option value="60-69">60-69分</option>
+                <option value="0-59">0-59分</option>
+            </select>
+            <button id="searchButton" class="success">查询</button>
+            <button id="resetButton" class="secondary">显示全部</button>
+            <button id="exportButton" class="secondary">导出数据</button>
+            <button id="importButton" class="secondary">导入数据</button>
+        </div>
+
+        <!-- 新增学生表单 -->
         <form id="studentForm">
-            <label for="name">学生姓名:</label>
-            <input type="text" id="name" required>
-            <label for="math">数学成绩:</label>
-            <input type="number" id="math" min="0" max="100" required>
-            <label for="chinese">语文成绩:</label>
-            <input type="number" id="chinese" min="0" max="100" required>
-            <label for="dataStructure">数据结构成绩:</label>
-            <input type="number" id="dataStructure" min="0" max="100" required>
-            <label for="network">计算机网络成绩:</label>
-            <input type="number" id="network" min="0" max="100" required>
-            <button type="submit">添加学生</button>
+            <h3>添加/编辑学生信息</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">学生姓名:</label>
+                    <input type="text" id="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="studentId">学号:</label>
+                    <input type="text" id="studentId" required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="math">数学成绩:</label>
+                    <input type="number" id="math" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="chinese">语文成绩:</label>
+                    <input type="number" id="chinese" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="dataStructure">数据结构成绩:</label>
+                    <input type="number" id="dataStructure" min="0" max="100" required>
+                </div>
+                <div class="form-group">
+                    <label for="network">计算机网络成绩:</label>
+                    <input type="number" id="network" min="0" max="100" required>
+                </div>
+            </div>
+            <button type="submit" id="submitBtn" class="success">添加学生</button>
+            <button type="button" id="cancelEditBtn" class="secondary" style="display:none;">取消编辑</button>
+            <input type="hidden" id="editIndex" value="-1">
         </form>
-        <button id="rankButton">按总分排名</button>
-        <table id="studentTable">
-            <thead>
-                <tr>
-                    <th>姓名</th>
-                    <th>数学</th>
-                    <th>语文</th>
-                    <th>数据结构</th>
-                    <th>计算机网络</th>
-                    <th>总分</th>
-                    <th>平均分</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
+
+        <!-- 操作按钮组 -->
+        <div class="action-buttons">
+            <button id="rankButton" class="success">按总分排名</button>
+            <button id="popButton" class="danger">删除最后添加</button>
+            <button id="clearAllButton" class="danger">清空所有数据</button>
+            <button id="showChartBtn" class="secondary">显示图表</button>
+        </div>
+
+        <!-- 学生表格 -->
+        <div style="overflow-x: auto;">
+            <table id="studentTable">
+                <thead>
+                    <tr>
+                        <th>排名</th>
+                        <th>学号</th>
+                        <th>姓名</th>
+                        <th>数学</th>
+                        <th>语文</th>
+                        <th>数据结构</th>
+                        <th>计算机网络</th>
+                        <th>总分</th>
+                        <th>平均分</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- 图表容器 -->
+        <div class="chart-container" id="chartContainer" style="display: none;">
+            <h3>成绩分布图表</h3>
+            <canvas id="scoreChart" width="400" height="200"></canvas>
+        </div>
     </div>
+
+    <!-- 导入数据模态框 -->
+    <div id="importModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h3>导入学生数据</h3>
+            <p>请选择JSON格式的学生数据文件：</p>
+            <input type="file" id="fileInput" accept=".json">
+            <div id="importPreview" style="margin-top: 15px; max-height: 300px; overflow-y: auto;"></div>
+            <button id="confirmImport" class="success" style="margin-top: 15px;">确认导入</button>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // 存储学生数据的数组
-        const students = [];
-        const studentTable = document.getElementById('studentTable');
-        const studentForm = document.getElementById('studentForm');
-        const rankButton = document.getElementById('rankButton');
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function () {
+            console.log('页面加载完成，初始化学生管理系统...');
 
-        // 渲染学生列表
-        function renderStudents() {
-            const tbody = studentTable.querySelector('tbody');
-            tbody.innerHTML = '';
-            students.forEach((student, index) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `
-                    <td>${student.name}</td>
-                    <td>${student.math}</td>
-                    <td>${student.chinese}</td>
-                    <td>${student.dataStructure}</td>
-                    <td>${student.network}</td>
-                    <td>${student.total}</td>
-                    <td>${student.average}</td>
-                `;
-                tbody.appendChild(row);
+            // 定义学生类
+            class Student {
+                constructor(name, studentId, math, chinese, dataStructure, network) {
+                    this.name = name;
+                    this.studentId = studentId;
+                    this.math = math;
+                    this.chinese = chinese;
+                    this.dataStructure = dataStructure;
+                    this.network = network;
+                    this.total = math + chinese + dataStructure + network;
+                    this.average = this.total / 4;
+                }
+            }
+
+            // 定义学生管理类
+            class StudentManager {
+                constructor() {
+                    this.students = [];
+                    this.loadFromStorage();
+                    this.currentEditIndex = -1;
+                }
+
+                // 添加学生
+                addStudent(student) {
+                    if (!this.validateStudent(student)) {
+                        return false;
+                    }
+                    
+                    // 检查学号是否已存在
+                    if (this.students.some(s => s.studentId === student.studentId && this.currentEditIndex === -1)) {
+                        showMessage('学号已存在，请使用不同的学号', 'error');
+                        return false;
+                    }
+                    
+                    if (this.currentEditIndex >= 0) {
+                        // 编辑现有学生
+                        this.students[this.currentEditIndex] = student;
+                        this.currentEditIndex = -1;
+                        showMessage('学生信息更新成功', 'success');
+                    } else {
+                        // 添加新学生
+                        this.students.push(student);
+                        showMessage('学生信息添加成功', 'success');
+                    }
+                    
+                    this.saveToStorage();
+                    this.updateStats();
+                    return true;
+                }
+
+                // 删除学生
+                deleteStudent(index) {
+                    if (index >= 0 && index < this.students.length) {
+                        const deletedStudent = this.students.splice(index, 1)[0];
+                        showMessage(`已删除学生: ${deletedStudent.name}`, 'success');
+                        this.saveToStorage();
+                        this.updateStats();
+                        return true;
+                    }
+                    return false;
+                }
+
+                // 删除最后一个学生
+                deleteLastStudent() {
+                    if (this.students.length === 0) {
+                        showMessage('没有学生可以删除', 'warning');
+                        return false;
+                    }
+                    return this.deleteStudent(this.students.length - 1);
+                }
+
+                // 清空所有学生
+                clearAllStudents() {
+                    if (this.students.length === 0) {
+                        showMessage('已经没有任何学生数据', 'warning');
+                        return false;
+                    }
+                    
+                    if (confirm('确定要清空所有学生数据吗？此操作不可撤销！')) {
+                        this.students = [];
+                        showMessage('已清空所有学生数据', 'success');
+                        this.saveToStorage();
+                        this.updateStats();
+                        return true;
+                    }
+                    return false;
+                }
+
+                // 验证学生数据
+                validateStudent(student) {
+                    if (!student.name || typeof student.name !== 'string' || student.name.trim() === '') {
+                        showMessage('请输入有效的学生姓名', 'error');
+                        return false;
+                    }
+                    
+                    if (!student.studentId || typeof student.studentId !== 'string' || student.studentId.trim() === '') {
+                        showMessage('请输入有效的学号', 'error');
+                        return false;
+                    }
+
+                    const subjects = ['math', 'chinese', 'dataStructure', 'network'];
+                    for (const subject of subjects) {
+                        const score = student[subject];
+                        if (typeof score !== 'number' || score < 0 || score > 100) {
+                            showMessage(`请输入有效的${this.getSubjectName(subject)}成绩(0-100)`, 'error');
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+
+                // 获取科目名称
+                getSubjectName(subject) {
+                    const names = {
+                        'math': '数学',
+                        'chinese': '语文',
+                        'dataStructure': '数据结构',
+                        'network': '计算机网络'
+                    };
+                    return names[subject] || subject;
+                }
+
+                // 根据条件搜索学生
+                searchStudents(name = '', subject = '', range = 'all') {
+                    let results = [...this.students];
+                    
+                    // 按姓名筛选
+                    if (name) {
+                        results = results.filter(student => 
+                            student.name.includes(name) || 
+                            student.studentId.includes(name)
+                        );
+                    }
+                    
+                    // 按科目筛选
+                    if (subject) {
+                        results = results.filter(student => {
+                            const score = student[subject];
+                            return this.filterByRange(score, range);
+                        });
+                    } else if (range !== 'all') {
+                        // 如果没有指定科目，则按总分筛选
+                        results = results.filter(student => {
+                            return this.filterByRange(student.total, range);
+                        });
+                    }
+                    
+                    return results;
+                }
+
+                // 根据分数范围筛选
+                filterByRange(score, range) {
+                    switch(range) {
+                        case '90-100': return score >= 90;
+                        case '80-89': return score >= 80 && score <= 89;
+                        case '70-79': return score >= 70 && score <= 79;
+                        case '60-69': return score >= 60 && score <= 69;
+                        case '0-59': return score < 60;
+                        default: return true;
+                    }
+                }
+
+                // 按总分排序
+                sortByTotal() {
+                    return [...this.students].sort((a, b) => b.total - a.total);
+                }
+
+                // 准备编辑学生
+                prepareEdit(index) {
+                    if (index >= 0 && index < this.students.length) {
+                        this.currentEditIndex = index;
+                        const student = this.students[index];
+                        
+                        document.getElementById('name').value = student.name;
+                        document.getElementById('studentId').value = student.studentId;
+                        document.getElementById('math').value = student.math;
+                        document.getElementById('chinese').value = student.chinese;
+                        document.getElementById('dataStructure').value = student.dataStructure;
+                        document.getElementById('network').value = student.network;
+                        
+                        document.getElementById('submitBtn').textContent = '更新学生';
+                        document.getElementById('cancelEditBtn').style.display = 'inline-block';
+                        
+                        showMessage(`正在编辑学生: ${student.name}`, 'success');
+                    }
+                }
+
+                // 取消编辑
+                cancelEdit() {
+                    this.currentEditIndex = -1;
+                    document.getElementById('studentForm').reset();
+                    document.getElementById('submitBtn').textContent = '添加学生';
+                    document.getElementById('cancelEditBtn').style.display = 'none';
+                }
+
+                // 导出数据为JSON
+                exportData() {
+                    if (this.students.length === 0) {
+                        showMessage('没有数据可以导出', 'warning');
+                        return;
+                    }
+                    
+                    const dataStr = JSON.stringify(this.students, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = `学生数据_${new Date().toLocaleDateString()}.json`;
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+                    
+                    showMessage('数据导出成功', 'success');
+                }
+
+                // 导入数据
+                importData(jsonData) {
+                    try {
+                        const importedStudents = JSON.parse(jsonData);
+                        
+                        if (!Array.isArray(importedStudents)) {
+                            throw new Error('数据格式不正确');
+                        }
+                        
+                        // 验证导入的数据
+                        const validStudents = [];
+                        for (const student of importedStudents) {
+                            const newStudent = new Student(
+                                student.name || '',
+                                student.studentId || '',
+                                Number(student.math) || 0,
+                                Number(student.chinese) || 0,
+                                Number(student.dataStructure) || 0,
+                                Number(student.network) || 0
+                            );
+                            
+                            if (this.validateStudent(newStudent)) {
+                                validStudents.push(newStudent);
+                            }
+                        }
+                        
+                        if (validStudents.length === 0) {
+                            throw new Error('没有有效的学生数据');
+                        }
+                        
+                        // 确认是否要合并数据
+                        if (this.students.length > 0) {
+                            if (!confirm(`将导入 ${validStudents.length} 条学生记录。是否要合并到现有数据中？`)) {
+                                return false;
+                            }
+                        }
+                        
+                        // 添加新数据
+                        validStudents.forEach(student => {
+                            // 检查学号是否已存在
+                            const exists = this.students.some(s => s.studentId === student.studentId);
+                            if (!exists) {
+                                this.students.push(student);
+                            }
+                        });
+                        
+                        this.saveToStorage();
+                        this.updateStats();
+                        showMessage(`成功导入 ${validStudents.length} 条学生记录`, 'success');
+                        return true;
+                    } catch (error) {
+                        showMessage(`导入失败: ${error.message}`, 'error');
+                        return false;
+                    }
+                }
+
+                // 保存数据到本地存储
+                saveToStorage() {
+                    localStorage.setItem('students', JSON.stringify(this.students));
+                }
+
+                // 从本地存储加载数据
+                loadFromStorage() {
+                    const data = localStorage.getItem('students');
+                    if (data) {
+                        try {
+                            const parsedData = JSON.parse(data);
+                            if (Array.isArray(parsedData)) {
+                                this.students = parsedData.map(student => 
+                                    new Student(
+                                        student.name,
+                                        student.studentId,
+                                        student.math,
+                                        student.chinese,
+                                        student.dataStructure,
+                                        student.network
+                                    )
+                                );
+                            }
+                        } catch (e) {
+                            console.error('解析本地存储数据失败:', e);
+                        }
+                    }
+                    this.updateStats();
+                }
+
+                // 更新统计信息
+                updateStats() {
+                    const totalStudents = document.getElementById('total-students');
+                    const avgTotal = document.getElementById('avg-total');
+                    const maxScore = document.getElementById('max-score');
+                    const minScore = document.getElementById('min-score');
+                    
+                    totalStudents.textContent = this.students.length;
+                    
+                    if (this.students.length === 0) {
+                        avgTotal.textContent = '0';
+                        maxScore.textContent = '0';
+                        minScore.textContent = '0';
+                        return;
+                    }
+                    
+                    const totals = this.students.map(s => s.total);
+                    const avg = totals.reduce((a, b) => a + b, 0) / totals.length;
+                    
+                    avgTotal.textContent = avg.toFixed(1);
+                    maxScore.textContent = Math.max(...totals);
+                    minScore.textContent = Math.min(...totals);
+                }
+
+                // 生成图表数据
+                getChartData() {
+                    const subjects = ['math', 'chinese', 'dataStructure', 'network'];
+                    const subjectNames = subjects.map(sub => this.getSubjectName(sub));
+                    
+                    const averages = subjects.map(sub => {
+                        const sum = this.students.reduce((acc, student) => acc + student[sub], 0);
+                        return this.students.length > 0 ? sum / this.students.length : 0;
+                    });
+                    
+                    const scoreRanges = ['0-59', '60-69', '70-79', '80-89', '90-100'];
+                    const rangeData = scoreRanges.map(range => {
+                        return this.students.filter(s => this.filterByRange(s.total, range)).length;
+                    });
+                    
+                    return {
+                        subjectNames,
+                        averages,
+                        scoreRanges,
+                        rangeData
+                    };
+                }
+            }
+
+            // 初始化学生管理器
+            const studentManager = new StudentManager();
+
+            // 显示消息
+            function showMessage(message, type) {
+                const messageElement = document.getElementById(`${type}-message`);
+                messageElement.textContent = message;
+                messageElement.classList.add('active');
+                
+                setTimeout(() => {
+                    messageElement.classList.remove('active');
+                }, 3000);
+            }
+
+            // 渲染表格
+            function renderTable(students = studentManager.students) {
+                const tableBody = document.getElementById('studentTable').getElementsByTagName('tbody')[0];
+                tableBody.innerHTML = '';
+
+                // 按总分排序
+                const sortedStudents = [...students].sort((a, b) => b.total - a.total);
+
+                sortedStudents.forEach((student, index) => {
+                    const row = tableBody.insertRow();
+                    
+                    // 排名
+                    row.insertCell(0).textContent = index + 1;
+                    
+                    // 学号
+                    row.insertCell(1).textContent = student.studentId;
+                    
+                    // 姓名
+                    const nameCell = row.insertCell(2);
+                    nameCell.textContent = student.name;
+                    
+                    // 各科成绩
+                    row.insertCell(3).textContent = student.math;
+                    row.insertCell(4).textContent = student.chinese;
+                    row.insertCell(5).textContent = student.dataStructure;
+                    row.insertCell(6).textContent = student.network;
+                    
+                    // 总分和平均分
+                    row.insertCell(7).textContent = student.total;
+                    row.insertCell(8).textContent = student.average.toFixed(2);
+                    
+                    // 操作按钮
+                    const actionCell = row.insertCell(9);
+                    
+                    const editBtn = document.createElement('button');
+                    editBtn.textContent = '编辑';
+                    editBtn.className = 'action-btn secondary';
+                    editBtn.onclick = () => studentManager.prepareEdit(studentManager.students.indexOf(student));
+                    
+                    const deleteBtn = document.createElement('button');
+                    deleteBtn.textContent = '删除';
+                    deleteBtn.className = 'action-btn danger';
+                    deleteBtn.onclick = () => {
+                        if (confirm(`确定要删除学生 ${student.name} 吗？`)) {
+                            studentManager.deleteStudent(studentManager.students.indexOf(student));
+                            renderTable();
+                        }
+                    };
+                    
+                    actionCell.appendChild(editBtn);
+                    actionCell.appendChild(deleteBtn);
+                });
+            }
+
+            // 初始化图表
+            let scoreChart = null;
+            
+            function renderChart() {
+                const chartContainer = document.getElementById('chartContainer');
+                chartContainer.style.display = 'block';
+                
+                const chartData = studentManager.getChartData();
+                const ctx = document.getElementById('scoreChart').getContext('2d');
+                
+                // 如果已有图表，先销毁
+                if (scoreChart) {
+                    scoreChart.destroy();
+                }
+                
+                // 创建新图表
+                scoreChart = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: chartData.subjectNames,
+                        datasets: [{
+                            label: '各科平均分',
+                            data: chartData.averages,
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.6)',
+                                'rgba(255, 99, 132, 0.6)',
+                                'rgba(75, 192, 192, 0.6)',
+                                'rgba(255, 206, 86, 0.6)'
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(75, 192, 192, 1)',
+                                'rgba(255, 206, 86, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                max: 100
+                            }
+                        }
+                    }
+                });
+            }
+
+            // 处理表单提交
+            document.getElementById('studentForm').addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const studentId = document.getElementById('studentId').value.trim();
+                const math = parseInt(document.getElementById('math').value);
+                const chinese = parseInt(document.getElementById('chinese').value);
+                const dataStructure = parseInt(document.getElementById('dataStructure').value);
+                const network = parseInt(document.getElementById('network').value);
+
+                const student = new Student(name, studentId, math, chinese, dataStructure, network);
+
+                if (studentManager.addStudent(student)) {
+                    renderTable();
+                    this.reset();
+                    document.getElementById('submitBtn').textContent = '添加学生';
+                    document.getElementById('cancelEditBtn').style.display = 'none';
+                    
+                    // 如果图表已显示，更新图表
+                    if (document.getElementById('chartContainer').style.display === 'block') {
+                        renderChart();
+                    }
+                }
             });
-        }
 
-        // 添加学生
-        studentForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const math = parseInt(document.getElementById('math').value);
-            const chinese = parseInt(document.getElementById('chinese').value);
-            const dataStructure = parseInt(document.getElementById('dataStructure').value);
-            const network = parseInt(document.getElementById('network').value);
+            // 取消编辑按钮
+            document.getElementById('cancelEditBtn').addEventListener('click', function() {
+                studentManager.cancelEdit();
+            });
 
-            const total = math + chinese + dataStructure + network;
-            const average = total / 4;
+            // 处理查询按钮点击事件
+            document.getElementById('searchButton').addEventListener('click', function () {
+                const searchName = document.getElementById('searchName').value.trim();
+                const searchSubject = document.getElementById('searchSubject').value;
+                const searchRange = document.getElementById('searchRange').value;
+                
+                const foundStudents = studentManager.searchStudents(searchName, searchSubject, searchRange);
+                
+                if (foundStudents.length === 0) {
+                    showMessage('未找到相关学生信息', 'warning');
+                } else {
+                    showMessage(`找到 ${foundStudents.length} 条匹配记录`, 'success');
+                }
+                
+                renderTable(foundStudents);
+            });
 
-            const student = {
-                name,
-                math,
-                chinese,
-                dataStructure,
-                network,
-                total,
-                average
-            };
+            // 处理显示全部按钮点击事件
+            document.getElementById('resetButton').addEventListener('click', function () {
+                document.getElementById('searchName').value = '';
+                document.getElementById('searchSubject').value = '';
+                document.getElementById('searchRange').value = 'all';
+                renderTable();
+            });
 
-            students.push(student);
-            renderStudents();
-            studentForm.reset();
-        });
+            // 处理按总分排名按钮点击事件
+            document.getElementById('rankButton').addEventListener('click', function () {
+                renderTable(studentManager.sortByTotal());
+            });
 
-        // 按总分排名
-        rankButton.addEventListener('click', () => {
-            students.sort((a, b) => b.total - a.total);
-            renderStudents();
+            // 处理删除栈顶学生按钮点击事件
+            document.getElementById('popButton').addEventListener('click', function () {
+                if (studentManager.deleteLastStudent()) {
+                    renderTable();
+                }
+            });
+
+            // 处理清空所有数据按钮
+            document.getElementById('clearAllButton').addEventListener('click', function() {
+                if (studentManager.clearAllStudents()) {
+                    renderTable();
+                }
+            });
+
+            // 处理导出数据按钮
+            document.getElementById('exportButton').addEventListener('click', function() {
+                studentManager.exportData();
+            });
+
+            // 处理导入数据按钮
+            document.getElementById('importButton').addEventListener('click', function() {
+                const modal = document.getElementById('importModal');
+                modal.style.display = 'block';
+            });
+
+            // 处理显示图表按钮
+            document.getElementById('showChartBtn').addEventListener('click', function() {
+                if (studentManager.students.length === 0) {
+                    showMessage('没有数据可以生成图表', 'warning');
+                    return;
+                }
+                
+                renderChart();
+            });
+
+            // 处理模态框关闭按钮
+            document.querySelector('.close-btn').addEventListener('click', function() {
+                document.getElementById('importModal').style.display = 'none';
+            });
+
+            // 处理文件选择
+            document.getElementById('fileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (!file) return;
+                
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    document.getElementById('importPreview').textContent = content;
+                };
+                reader.readAsText(file);
+            });
+
+            // 处理确认导入按钮
+            document.getElementById('confirmImport').addEventListener('click', function() {
+                const content = document.getElementById('importPreview').textContent;
+                if (content && studentManager.importData(content)) {
+                    document.getElementById('importModal').style.display = 'none';
+                    document.getElementById('fileInput').value = '';
+                    document.getElementById('importPreview').textContent = '';
+                    renderTable();
+                }
+            });
+
+            // 点击模态框外部关闭
+            window.addEventListener('click', function(event) {
+                if (event.target === document.getElementById('importModal')) {
+                    document.getElementById('importModal').style.display = 'none';
+                }
+            });
+
+            // 初始渲染表格
+            renderTable();
         });
     </script>
 </body>
